@@ -39,6 +39,7 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        alignment: Alignment.center,
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height,

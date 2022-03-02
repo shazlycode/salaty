@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salaty/providers/azkar_provider.dart';
+import 'package:salaty/providers/moazen_provider.dart';
 import 'package:salaty/providers/prayers_provider.dart';
 import 'package:salaty/providers/quran_provider.dart';
 import 'package:salaty/screens/azkar_screen.dart';
@@ -26,8 +27,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ZekrProvider()),
         ChangeNotifierProvider(create: (_) => SurasProvider()),
         ChangeNotifierProvider(create: (_) => QuranProvider()),
+        ChangeNotifierProvider(create: (_) => MoazenProvider()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           textTheme: const TextTheme(
             bodyText1: TextStyle(color: Colors.white, fontSize: 15),

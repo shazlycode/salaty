@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salaty/providers/prayers_provider.dart';
 import 'package:salaty/widgets/prayer_time.dart';
+import 'package:salaty/widgets/side_drawer.dart';
 
 class Month extends StatefulWidget {
   static const String id = 'month';
@@ -40,6 +41,7 @@ class _MonthState extends State<Month> {
   Widget build(BuildContext context) {
     final pTData = Provider.of<PrayerTimesProvider>(context);
     return Scaffold(
+      drawer: SideDrawer(),
       body:
 
           //     Container(

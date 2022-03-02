@@ -1,15 +1,19 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:salaty/providers/moazen_provider.dart';
 import 'package:salaty/providers/prayers_provider.dart';
 import 'package:salaty/screens/azkar_screen.dart';
 import 'package:salaty/screens/month.dart';
 import 'package:salaty/screens/suras_index.dart';
 import 'package:salaty/widgets/extra_item.dart';
+import 'package:salaty/widgets/side_drawer.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = 'main_screen';
@@ -20,6 +24,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  AudioPlayer audioPlayer = AudioPlayer();
+
   AndroidInitializationSettings? androidInitializationSettings;
   IOSInitializationSettings? iosInitializationSettings;
   InitializationSettings? initializationSettings;
@@ -358,43 +364,34 @@ class _MainScreenState extends State<MainScreen> {
   //   maghrepTime = DateTime(now!.year, now!.month, now!.day, hr, min);
   //   print(maghrepTime);
   // }
-  DateTime? remain = DateTime.now();
+  String? remain = '';
   String? nextP = '';
   void getRemain() {
     if (dateTime!.isBefore(todayPrayers!.fajrTime!)) {
-      remain = todayPrayers!.fajrTime!.subtract(Duration(
-          days: dateTime!.day,
-          hours: dateTime!.hour,
-          minutes: dateTime!.minute,
-          seconds: dateTime!.second));
+      Duration? t = todayPrayers!.fajrTime!.difference(dateTime!);
+      remain = Duration(seconds: t.inSeconds).toString().substring(0, 7);
+      // remain = todayPrayers!.fajrTime!.subtract(Duration(
+      //     days: dateTime!.day,
+      //     hours: dateTime!.hour - 12,
+      //     minutes: dateTime!.minute,
+      //     seconds: dateTime!.second));
       nextP = 'Fajr';
     } else if (dateTime!.isBefore(todayPrayers!.duhurTime!)) {
-      remain = todayPrayers!.duhurTime!.subtract(Duration(
-          days: dateTime!.day,
-          hours: dateTime!.hour,
-          minutes: dateTime!.minute,
-          seconds: dateTime!.second));
+      Duration? t = todayPrayers!.duhurTime!.difference(dateTime!);
+      remain = Duration(seconds: t.inSeconds).toString().split('.00')[0];
       nextP = 'Duhur';
     } else if (dateTime!.isBefore(todayPrayers!.asrTime!)) {
-      remain = todayPrayers!.asrTime!.subtract(Duration(
-          days: dateTime!.day,
-          hours: dateTime!.hour,
-          minutes: dateTime!.minute,
-          seconds: dateTime!.second));
+      Duration? t = todayPrayers!.asrTime!.difference(dateTime!);
+      remain = Duration(seconds: t.inSeconds).toString().split('.00')[0];
+
       nextP = 'Asr';
     } else if (dateTime!.isBefore(todayPrayers!.maghripTime!)) {
-      remain = todayPrayers!.maghripTime!.subtract(Duration(
-          days: dateTime!.day,
-          hours: dateTime!.hour,
-          minutes: dateTime!.minute,
-          seconds: dateTime!.second));
+      Duration? t = todayPrayers!.maghripTime!.difference(dateTime!);
+      remain = Duration(seconds: t.inSeconds).toString().substring(0, 7);
       nextP = 'Maghrip';
     } else if (dateTime!.isBefore(todayPrayers!.ishaTime!)) {
-      remain = todayPrayers!.ishaTime!.subtract(Duration(
-          days: dateTime!.day,
-          hours: dateTime!.hour,
-          minutes: dateTime!.minute,
-          seconds: dateTime!.second));
+      Duration? t = todayPrayers!.ishaTime!.difference(dateTime!);
+      remain = Duration(seconds: t.inSeconds).toString().substring(0, 7);
       nextP = 'Isha';
     }
   }
@@ -407,11 +404,26 @@ class _MainScreenState extends State<MainScreen> {
   //   print(ishaTime);
   // }
   bool _isAzkarSabah = true;
+  var _loadingLoc = false;
+
+  getLocation() async {
+    setState(() {
+      _loadingLoc = true;
+    });
+    await context.read<PrayerTimesProvider>().resetLocation();
+    setState(() {
+      _loadingLoc = false;
+    });
+  }
+
+  bool isPlaying = false;
   //
   @override
   Widget build(BuildContext context) {
-    final pp = context.read<PrayerTimesProvider>();
+    GlobalKey? _scaffoldKey = GlobalKey<ScaffoldState>();
+    final pp = context.watch<PrayerTimesProvider>();
     return Scaffold(
+      drawer: SideDrawer(),
       body: SingleChildScrollView(
         child: Stack(
           alignment: AlignmentDirectional.center,
@@ -426,8 +438,9 @@ class _MainScreenState extends State<MainScreen> {
               fit: BoxFit.cover,
             )),
             Positioned(
-                top: 30,
-                child: Text(DateFormat().add_EEEE().format(dateTime!))),
+              top: 40,
+              child: Text(DateFormat().add_EEEE().format(dateTime!)),
+            ),
             Positioned(
                 top: 70,
                 child:
@@ -436,15 +449,29 @@ class _MainScreenState extends State<MainScreen> {
                 top: 95,
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.location_on,
-                      color: Colors.red,
+                    GestureDetector(
+                      child: _loadingLoc
+                          ? const CircularProgressIndicator(
+                              backgroundColor: Colors.white,
+                            )
+                          : const Icon(
+                              Icons.location_on,
+                              size: 35,
+                              color: Colors.red,
+                            ),
+                      onTap: () async {
+                        print('///////////////');
+                        getLocation();
+                      },
                     ),
-                    Text(pp.add1! + '-' + pp.add2!),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Text(pp.add1! + ' - ' + pp.add2!),
                   ],
                 )),
             Positioned(
-                top: 120,
+                top: 140,
                 child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
@@ -453,13 +480,13 @@ class _MainScreenState extends State<MainScreen> {
                     child: Column(
                       children: [
                         Text('Remain to $nextP'),
-                        Text(DateFormat('hh-mm-ss').format(remain!))
+                        Text(remain!),
                       ],
                     ))),
             _isLoading
                 ? CircularProgressIndicator()
                 : Positioned(
-                    top: 200,
+                    top: 220,
                     child: Container(
                       padding: EdgeInsets.all(10),
                       height: 400,
@@ -578,7 +605,59 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    child: Container(
+                                      // title: Text('Select Moazen'),
+                                      height: 300,
+                                      child: Consumer<MoazenProvider>(
+                                        builder: (context, mp, child) {
+                                          return ListView.builder(
+                                              itemCount: mp.moazens.length,
+                                              itemBuilder: (context, index) {
+                                                return ListTile(
+                                                  title: Text(
+                                                      mp.moazens[index].name!,
+                                                      style: const TextStyle(
+                                                          color: Colors.black)),
+                                                  trailing: IconButton(
+                                                    icon: Icon(isPlaying
+                                                        ? Icons.pause
+                                                        : Icons.play_arrow),
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        isPlaying = !isPlaying;
+                                                      });
+                                                      isPlaying
+                                                          ? await audioPlayer.play(
+                                                              'assets/sounds/a.mp3',
+                                                              isLocal: true)
+                                                          : await audioPlayer
+                                                              .pause();
+                                                    },
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                          child: ExtraItem(
+                            asset: 'assets/images/moazen.jpg',
+                            name: 'تغيير المؤذن',
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
