@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
-import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:salaty/providers/moazen_provider.dart';
 import 'package:salaty/providers/prayers_provider.dart';
@@ -14,6 +12,8 @@ import 'package:salaty/screens/month.dart';
 import 'package:salaty/screens/suras_index.dart';
 import 'package:salaty/widgets/extra_item.dart';
 import 'package:salaty/widgets/side_drawer.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = 'main_screen';
@@ -24,8 +24,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  AudioPlayer audioPlayer = AudioPlayer();
-
   AndroidInitializationSettings? androidInitializationSettings;
   IOSInitializationSettings? iosInitializationSettings;
   InitializationSettings? initializationSettings;
@@ -41,7 +39,6 @@ class _MainScreenState extends State<MainScreen> {
   DateTime? asrTime;
   DateTime? maghrepTime;
   DateTime? ishaTime;
-
   List<PrayerTime>? monthPrayers;
 
   @override
@@ -85,34 +82,32 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  // String sound = 'a';
+
   Future<void> _notifyFajr() async {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
-      // if (monthPrayers![i].fajrTime!.isBefore(dateTime!)) {
-      //   return;
-      // } else {
-      AndroidNotificationDetails androidNotificationDetails =
-          const AndroidNotificationDetails('channelId', 'title',
-              importance: Importance.high,
-              priority: Priority.max,
-              sound: RawResourceAndroidNotificationSound('a'));
-
-      IOSNotificationDetails iosNotificationDetails =
-          const IOSNotificationDetails();
-      NotificationDetails notificationDetails = NotificationDetails(
-          android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-      // ignore: deprecated_member_use
-      await flutterLocalNotificationsPlugin!.schedule(
-          i * Random().nextInt(10),
-          'Al Mosaly',
-          'الفجر',
-          monthPrayers![i].fajrTime!,
-          notificationDetails);
       if (monthPrayers![i].fajrTime!.isBefore(dateTime!)) {
-        await flutterLocalNotificationsPlugin!.cancel(i * Random().nextInt(10));
-        // }
+        return;
+      } else {
+        AndroidNotificationDetails androidNotificationDetails =
+            const AndroidNotificationDetails('channelId', 'title',
+                importance: Importance.high,
+                priority: Priority.max,
+                sound: RawResourceAndroidNotificationSound('b'));
+
+        IOSNotificationDetails iosNotificationDetails =
+            const IOSNotificationDetails();
+        NotificationDetails notificationDetails = NotificationDetails(
+            android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+        // ignore: deprecated_member_use
+        await flutterLocalNotificationsPlugin!.schedule(i * 50, 'صلاتـــي',
+            'الفجر', monthPrayers![i].fajrTime!, notificationDetails);
+        if (monthPrayers![i].fajrTime!.isBefore(dateTime!)) {
+          await flutterLocalNotificationsPlugin!.cancel(i * 50);
+        }
       }
     }
   }
@@ -121,30 +116,26 @@ class _MainScreenState extends State<MainScreen> {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
-      // if (monthPrayers![i].duhurTime!.isBefore(dateTime!)) {
-      //   return;
-      // } else {
-      AndroidNotificationDetails androidNotificationDetails =
-          const AndroidNotificationDetails('channelId', 'title',
-              importance: Importance.high,
-              priority: Priority.max,
-              sound: RawResourceAndroidNotificationSound('a'));
-
-      IOSNotificationDetails iosNotificationDetails =
-          const IOSNotificationDetails();
-      NotificationDetails notificationDetails = NotificationDetails(
-          android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-      // ignore: deprecated_member_use
-      await flutterLocalNotificationsPlugin!.schedule(
-          i * Random().nextInt(20),
-          'Al Mosaly',
-          'الظهر',
-          monthPrayers![i].duhurTime!,
-          notificationDetails);
       if (monthPrayers![i].duhurTime!.isBefore(dateTime!)) {
-        await flutterLocalNotificationsPlugin!.cancel(i * Random().nextInt(20));
-        // }
+        return;
+      } else {
+        AndroidNotificationDetails androidNotificationDetails =
+            const AndroidNotificationDetails('channelId', 'title',
+                importance: Importance.high,
+                priority: Priority.max,
+                sound: RawResourceAndroidNotificationSound('b'));
+
+        IOSNotificationDetails iosNotificationDetails =
+            const IOSNotificationDetails();
+        NotificationDetails notificationDetails = NotificationDetails(
+            android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+        // ignore: deprecated_member_use
+        await flutterLocalNotificationsPlugin!.schedule(i * 150, 'صلاتـــي',
+            'الظهر', monthPrayers![i].duhurTime!, notificationDetails);
+        if (monthPrayers![i].duhurTime!.isBefore(dateTime!)) {
+          await flutterLocalNotificationsPlugin!.cancel(i * 150);
+        }
       }
     }
   }
@@ -153,26 +144,26 @@ class _MainScreenState extends State<MainScreen> {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
-      // if (monthPrayers![i].asrTime!.isBefore(dateTime!)) {
-      //   return;
-      // } else {
-      AndroidNotificationDetails androidNotificationDetails =
-          const AndroidNotificationDetails('channelId', 'title',
-              importance: Importance.high,
-              priority: Priority.max,
-              sound: RawResourceAndroidNotificationSound('a'));
-
-      IOSNotificationDetails iosNotificationDetails =
-          const IOSNotificationDetails();
-      NotificationDetails notificationDetails = NotificationDetails(
-          android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-      // ignore: deprecated_member_use
-      await flutterLocalNotificationsPlugin!.schedule(i * Random().nextInt(30),
-          'Al Mosaly', 'العصر', monthPrayers![i].asrTime!, notificationDetails);
       if (monthPrayers![i].asrTime!.isBefore(dateTime!)) {
-        await flutterLocalNotificationsPlugin!.cancel(i * Random().nextInt(30));
-        // }
+        return;
+      } else {
+        AndroidNotificationDetails androidNotificationDetails =
+            const AndroidNotificationDetails('channelId', 'title',
+                importance: Importance.high,
+                priority: Priority.max,
+                sound: RawResourceAndroidNotificationSound('b'));
+
+        IOSNotificationDetails iosNotificationDetails =
+            const IOSNotificationDetails();
+        NotificationDetails notificationDetails = NotificationDetails(
+            android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+        // ignore: deprecated_member_use
+        await flutterLocalNotificationsPlugin!.schedule(i * 200, 'صلاتـــي',
+            'العصر', monthPrayers![i].asrTime!, notificationDetails);
+        if (monthPrayers![i].asrTime!.isBefore(dateTime!)) {
+          await flutterLocalNotificationsPlugin!.cancel(i * 200);
+        }
       }
     }
   }
@@ -181,30 +172,26 @@ class _MainScreenState extends State<MainScreen> {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
-      // if (monthPrayers![i].maghripTime!.isBefore(dateTime!)) {
-      //   return;
-      // } else {
-      AndroidNotificationDetails androidNotificationDetails =
-          const AndroidNotificationDetails('channelId', 'title',
-              importance: Importance.high,
-              priority: Priority.max,
-              sound: RawResourceAndroidNotificationSound('a'));
-
-      IOSNotificationDetails iosNotificationDetails =
-          const IOSNotificationDetails();
-      NotificationDetails notificationDetails = NotificationDetails(
-          android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-      // ignore: deprecated_member_use
-      await flutterLocalNotificationsPlugin!.schedule(
-          i * Random().nextInt(40),
-          'Al Mosaly',
-          'المغرب',
-          monthPrayers![i].maghripTime!,
-          notificationDetails);
       if (monthPrayers![i].maghripTime!.isBefore(dateTime!)) {
-        await flutterLocalNotificationsPlugin!.cancel(40);
-        // }
+        return;
+      } else {
+        AndroidNotificationDetails androidNotificationDetails =
+            const AndroidNotificationDetails('channelId', 'title',
+                importance: Importance.high,
+                priority: Priority.max,
+                sound: RawResourceAndroidNotificationSound('b'));
+
+        IOSNotificationDetails iosNotificationDetails =
+            const IOSNotificationDetails();
+        NotificationDetails notificationDetails = NotificationDetails(
+            android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+        // ignore: deprecated_member_use
+        await flutterLocalNotificationsPlugin!.schedule(i * 250, 'صلاتـــي',
+            'المغرب', monthPrayers![i].maghripTime!, notificationDetails);
+        if (monthPrayers![i].maghripTime!.isBefore(dateTime!)) {
+          await flutterLocalNotificationsPlugin!.cancel(i * 250);
+        }
       }
     }
   }
@@ -213,30 +200,26 @@ class _MainScreenState extends State<MainScreen> {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
-      // if (monthPrayers![i].ishaTime!.isBefore(dateTime!)) {
-      //   return;
-      // } else {
-      AndroidNotificationDetails androidNotificationDetails =
-          const AndroidNotificationDetails('channelId', 'title',
-              importance: Importance.high,
-              priority: Priority.max,
-              sound: RawResourceAndroidNotificationSound('a'));
-
-      IOSNotificationDetails iosNotificationDetails =
-          const IOSNotificationDetails();
-      NotificationDetails notificationDetails = NotificationDetails(
-          android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-      // ignore: deprecated_member_use
-      await flutterLocalNotificationsPlugin!.schedule(
-          i * Random().nextInt(50),
-          'Al Mosaly',
-          'العشاء',
-          monthPrayers![i].ishaTime!,
-          notificationDetails);
       if (monthPrayers![i].ishaTime!.isBefore(dateTime!)) {
-        await flutterLocalNotificationsPlugin!.cancel(i * Random().nextInt(50));
-        // }
+        return;
+      } else {
+        AndroidNotificationDetails androidNotificationDetails =
+            const AndroidNotificationDetails('channelId', 'title',
+                importance: Importance.high,
+                priority: Priority.max,
+                sound: RawResourceAndroidNotificationSound('b'));
+
+        IOSNotificationDetails iosNotificationDetails =
+            const IOSNotificationDetails();
+        NotificationDetails notificationDetails = NotificationDetails(
+            android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+        // ignore: deprecated_member_use
+        await flutterLocalNotificationsPlugin!.schedule(i * 350, 'صلاتـــي',
+            'العشاء', monthPrayers![i].ishaTime!, notificationDetails);
+        if (monthPrayers![i].ishaTime!.isBefore(dateTime!)) {
+          await flutterLocalNotificationsPlugin!.cancel(i * 350);
+        }
       }
     }
   }
@@ -416,7 +399,15 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
   bool isPlaying = false;
+
+  Future<void> launchApp(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
+  }
+
   //
   @override
   Widget build(BuildContext context) {
@@ -601,7 +592,7 @@ class _MainScreenState extends State<MainScreen> {
                           },
                           child: ExtraItem(
                             asset: 'assets/images/sublimation.jpeg',
-                            name: 'الدعاء',
+                            name: 'اوقات الصلاة لشهر',
                           ),
                         ),
                       ],
@@ -609,51 +600,18 @@ class _MainScreenState extends State<MainScreen> {
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                    child: Container(
-                                      // title: Text('Select Moazen'),
-                                      height: 300,
-                                      child: Consumer<MoazenProvider>(
-                                        builder: (context, mp, child) {
-                                          return ListView.builder(
-                                              itemCount: mp.moazens.length,
-                                              itemBuilder: (context, index) {
-                                                return ListTile(
-                                                  title: Text(
-                                                      mp.moazens[index].name!,
-                                                      style: const TextStyle(
-                                                          color: Colors.black)),
-                                                  trailing: IconButton(
-                                                    icon: Icon(isPlaying
-                                                        ? Icons.pause
-                                                        : Icons.play_arrow),
-                                                    onPressed: () async {
-                                                      setState(() {
-                                                        isPlaying = !isPlaying;
-                                                      });
-                                                      isPlaying
-                                                          ? await audioPlayer.play(
-                                                              'assets/sounds/a.mp3',
-                                                              isLocal: true)
-                                                          : await audioPlayer
-                                                              .pause();
-                                                    },
-                                                  ),
-                                                );
-                                              });
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                });
+                          onTap: () async {
+                            await LaunchApp.openApp(
+                                androidPackageName: 'com.shazlycode.weather',
+                                openStore: true,
+                                appStoreLink:
+                                    'https://play.google.com/store/apps/details?id=com.shazlycode.weather');
+                            // launchApp(
+                            //     'https://play.google.com/store/apps/details?id=com.shazlycode.weather');
                           },
                           child: ExtraItem(
-                            asset: 'assets/images/moazen.jpg',
-                            name: 'تغيير المؤذن',
+                            asset: 'assets/images/weather.png',
+                            name: 'درجات الحرارة',
                           ),
                         ),
                       ],
