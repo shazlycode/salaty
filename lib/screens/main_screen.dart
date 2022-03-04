@@ -88,26 +88,26 @@ class _MainScreenState extends State<MainScreen> {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
+      // if (monthPrayers![i].fajrTime!.isBefore(dateTime!)) {
+      //   return;
+      // } else {
+      AndroidNotificationDetails androidNotificationDetails =
+          const AndroidNotificationDetails('channelId', 'title',
+              importance: Importance.high,
+              priority: Priority.max,
+              sound: RawResourceAndroidNotificationSound('b'));
+
+      IOSNotificationDetails iosNotificationDetails =
+          const IOSNotificationDetails();
+      NotificationDetails notificationDetails = NotificationDetails(
+          android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+      // ignore: deprecated_member_use
+      await flutterLocalNotificationsPlugin!.schedule(i * 50, 'صلاتـــي',
+          'الفجر', monthPrayers![i].fajrTime!, notificationDetails);
       if (monthPrayers![i].fajrTime!.isBefore(dateTime!)) {
-        return;
-      } else {
-        AndroidNotificationDetails androidNotificationDetails =
-            const AndroidNotificationDetails('channelId', 'title',
-                importance: Importance.high,
-                priority: Priority.max,
-                sound: RawResourceAndroidNotificationSound('b'));
-
-        IOSNotificationDetails iosNotificationDetails =
-            const IOSNotificationDetails();
-        NotificationDetails notificationDetails = NotificationDetails(
-            android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-        // ignore: deprecated_member_use
-        await flutterLocalNotificationsPlugin!.schedule(i * 50, 'صلاتـــي',
-            'الفجر', monthPrayers![i].fajrTime!, notificationDetails);
-        if (monthPrayers![i].fajrTime!.isBefore(dateTime!)) {
-          await flutterLocalNotificationsPlugin!.cancel(i * 50);
-        }
+        await flutterLocalNotificationsPlugin!.cancel(i * 50);
+        // }
       }
     }
   }
@@ -116,26 +116,26 @@ class _MainScreenState extends State<MainScreen> {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
+      // if (monthPrayers![i].duhurTime!.isBefore(dateTime!)) {
+      //   return;
+      // } else {
+      AndroidNotificationDetails androidNotificationDetails =
+          const AndroidNotificationDetails('channelId', 'title',
+              importance: Importance.high,
+              priority: Priority.max,
+              sound: RawResourceAndroidNotificationSound('b'));
+
+      IOSNotificationDetails iosNotificationDetails =
+          const IOSNotificationDetails();
+      NotificationDetails notificationDetails = NotificationDetails(
+          android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+      // ignore: deprecated_member_use
+      await flutterLocalNotificationsPlugin!.schedule(i * 150, 'صلاتـــي',
+          'الظهر', monthPrayers![i].duhurTime!, notificationDetails);
       if (monthPrayers![i].duhurTime!.isBefore(dateTime!)) {
-        return;
-      } else {
-        AndroidNotificationDetails androidNotificationDetails =
-            const AndroidNotificationDetails('channelId', 'title',
-                importance: Importance.high,
-                priority: Priority.max,
-                sound: RawResourceAndroidNotificationSound('b'));
-
-        IOSNotificationDetails iosNotificationDetails =
-            const IOSNotificationDetails();
-        NotificationDetails notificationDetails = NotificationDetails(
-            android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-        // ignore: deprecated_member_use
-        await flutterLocalNotificationsPlugin!.schedule(i * 150, 'صلاتـــي',
-            'الظهر', monthPrayers![i].duhurTime!, notificationDetails);
-        if (monthPrayers![i].duhurTime!.isBefore(dateTime!)) {
-          await flutterLocalNotificationsPlugin!.cancel(i * 150);
-        }
+        await flutterLocalNotificationsPlugin!.cancel(i * 150);
+        // }
       }
     }
   }
@@ -144,26 +144,26 @@ class _MainScreenState extends State<MainScreen> {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
+      // if (monthPrayers![i].asrTime!.isBefore(dateTime!)) {
+      //   return;
+      // } else {
+      AndroidNotificationDetails androidNotificationDetails =
+          const AndroidNotificationDetails('channelId', 'title',
+              importance: Importance.high,
+              priority: Priority.max,
+              sound: RawResourceAndroidNotificationSound('b'));
+
+      IOSNotificationDetails iosNotificationDetails =
+          const IOSNotificationDetails();
+      NotificationDetails notificationDetails = NotificationDetails(
+          android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+      // ignore: deprecated_member_use
+      await flutterLocalNotificationsPlugin!.schedule(i * 200, 'صلاتـــي',
+          'العصر', monthPrayers![i].asrTime!, notificationDetails);
       if (monthPrayers![i].asrTime!.isBefore(dateTime!)) {
-        return;
-      } else {
-        AndroidNotificationDetails androidNotificationDetails =
-            const AndroidNotificationDetails('channelId', 'title',
-                importance: Importance.high,
-                priority: Priority.max,
-                sound: RawResourceAndroidNotificationSound('b'));
-
-        IOSNotificationDetails iosNotificationDetails =
-            const IOSNotificationDetails();
-        NotificationDetails notificationDetails = NotificationDetails(
-            android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-        // ignore: deprecated_member_use
-        await flutterLocalNotificationsPlugin!.schedule(i * 200, 'صلاتـــي',
-            'العصر', monthPrayers![i].asrTime!, notificationDetails);
-        if (monthPrayers![i].asrTime!.isBefore(dateTime!)) {
-          await flutterLocalNotificationsPlugin!.cancel(i * 200);
-        }
+        await flutterLocalNotificationsPlugin!.cancel(i * 200);
+        // }
       }
     }
   }
@@ -172,26 +172,26 @@ class _MainScreenState extends State<MainScreen> {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
+      // if (monthPrayers![i].maghripTime!.isBefore(dateTime!)) {
+      //   return;
+      // } else {
+      AndroidNotificationDetails androidNotificationDetails =
+          const AndroidNotificationDetails('channelId', 'title',
+              importance: Importance.high,
+              priority: Priority.max,
+              sound: RawResourceAndroidNotificationSound('b'));
+
+      IOSNotificationDetails iosNotificationDetails =
+          const IOSNotificationDetails();
+      NotificationDetails notificationDetails = NotificationDetails(
+          android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+      // ignore: deprecated_member_use
+      await flutterLocalNotificationsPlugin!.schedule(i * 250, 'صلاتـــي',
+          'المغرب', monthPrayers![i].maghripTime!, notificationDetails);
       if (monthPrayers![i].maghripTime!.isBefore(dateTime!)) {
-        return;
-      } else {
-        AndroidNotificationDetails androidNotificationDetails =
-            const AndroidNotificationDetails('channelId', 'title',
-                importance: Importance.high,
-                priority: Priority.max,
-                sound: RawResourceAndroidNotificationSound('b'));
-
-        IOSNotificationDetails iosNotificationDetails =
-            const IOSNotificationDetails();
-        NotificationDetails notificationDetails = NotificationDetails(
-            android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-        // ignore: deprecated_member_use
-        await flutterLocalNotificationsPlugin!.schedule(i * 250, 'صلاتـــي',
-            'المغرب', monthPrayers![i].maghripTime!, notificationDetails);
-        if (monthPrayers![i].maghripTime!.isBefore(dateTime!)) {
-          await flutterLocalNotificationsPlugin!.cancel(i * 250);
-        }
+        await flutterLocalNotificationsPlugin!.cancel(i * 250);
+        // }
       }
     }
   }
@@ -200,26 +200,26 @@ class _MainScreenState extends State<MainScreen> {
     // await flutterLocalNotificationsPlugin!.cancelAll();
 
     for (int i = 0; i < monthPrayers!.length; i++) {
+      // if (monthPrayers![i].ishaTime!.isBefore(dateTime!)) {
+      //   return;
+      // } else {
+      AndroidNotificationDetails androidNotificationDetails =
+          const AndroidNotificationDetails('channelId', 'title',
+              importance: Importance.high,
+              priority: Priority.max,
+              sound: RawResourceAndroidNotificationSound('b'));
+
+      IOSNotificationDetails iosNotificationDetails =
+          const IOSNotificationDetails();
+      NotificationDetails notificationDetails = NotificationDetails(
+          android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+      // ignore: deprecated_member_use
+      await flutterLocalNotificationsPlugin!.schedule(i * 350, 'صلاتـــي',
+          'العشاء', monthPrayers![i].ishaTime!, notificationDetails);
       if (monthPrayers![i].ishaTime!.isBefore(dateTime!)) {
-        return;
-      } else {
-        AndroidNotificationDetails androidNotificationDetails =
-            const AndroidNotificationDetails('channelId', 'title',
-                importance: Importance.high,
-                priority: Priority.max,
-                sound: RawResourceAndroidNotificationSound('b'));
-
-        IOSNotificationDetails iosNotificationDetails =
-            const IOSNotificationDetails();
-        NotificationDetails notificationDetails = NotificationDetails(
-            android: androidNotificationDetails, iOS: iosNotificationDetails);
-
-        // ignore: deprecated_member_use
-        await flutterLocalNotificationsPlugin!.schedule(i * 350, 'صلاتـــي',
-            'العشاء', monthPrayers![i].ishaTime!, notificationDetails);
-        if (monthPrayers![i].ishaTime!.isBefore(dateTime!)) {
-          await flutterLocalNotificationsPlugin!.cancel(i * 350);
-        }
+        await flutterLocalNotificationsPlugin!.cancel(i * 350);
+        // }
       }
     }
   }
